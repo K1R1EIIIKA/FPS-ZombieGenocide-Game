@@ -1,53 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour
 {
-    public float mouseSensivity = 1f;
+    public float mouseSensitivity = 1f;
 
     private float _axisX;
     private float _axisY;
     private bool _isLocked = true;
 
-    [SerializeField] private AudioSource attackSound;
-    
     private Vector3 _rotate;
-    private Level _level;
     
     void Start()
     {
         LockCursor(true);
-        
-        _level = GameObject.Find("EventSystem").GetComponent<Level>();
     }
     
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
+        {
             LockCursor(false);
+            Time.timeScale = 0;
+        }
         
         if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
             LockCursor(true);
+            Time.timeScale = 1;
+        }
 
-        if (_level.IsGameOver)
+        if (Level.IsGameOver)
             LockCursor(false);
 
         if (!_isLocked) return;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0) && _level.IsGameStart)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && Level.IsGameStart)
         {
             GetCooldown();
             
-            if (_level.IsActiveCooldown)
-                attackSound.Play();
+            if (Level.IsActiveCooldown)
+                FindObjectOfType<AudioManager>().Play("shoot");
         }
         
         
         _axisY = Input.GetAxis("Mouse X");
         _axisX = Input.GetAxis("Mouse Y");
-        _rotate = new Vector3(_axisX, _axisY * -mouseSensivity, 0);
+        _rotate = new Vector3(_axisX, _axisY * -mouseSensitivity, 0);
 
         transform.eulerAngles -= _rotate;
     }
@@ -60,14 +62,14 @@ public class CameraMovement : MonoBehaviour
 
     private void GetCooldown()
     {
-        if (_level.LastCooldownTime + _level.attackCooldown < Time.time)
+        if (Level.LastCooldownTime + Level.AttackCooldown < Time.time)
         {
-            _level.IsActiveCooldown = true;
-            _level.LastCooldownTime = Time.time;
+            Level.IsActiveCooldown = true;
+            Level.LastCooldownTime = Time.time;
         }
         else
         {
-            _level.IsActiveCooldown = false;
+            Level.IsActiveCooldown = false;
         }
     }
 }

@@ -5,15 +5,16 @@ using UnityEngine.Serialization;
 
 public class Level : MonoBehaviour
 {
-    public int points;
     public int prepareTime = 3;
     public int timer = 31;
-    public float attackCooldown = 0.5f;
+    public float setAttackCooldown = 0.5f;
 
-    [NonSerialized] public bool IsGameOver;
-    [NonSerialized] public bool IsGameStart;
-    [NonSerialized] public bool IsActiveCooldown;
-    [NonSerialized] public float LastCooldownTime;
+    public static bool IsGameOver;
+    public static bool IsGameStart;
+    public static bool IsActiveCooldown;
+    public static float LastCooldownTime;
+    public static float AttackCooldown;
+    public static int Points;
 
     private TMP_Text _pointsText;
     private TMP_Text _gameTimerText;
@@ -27,6 +28,7 @@ public class Level : MonoBehaviour
     
     void Start()
     {
+        AttackCooldown = setAttackCooldown;
         _pointsText = GameObject.Find("PointsText").GetComponent<TMP_Text>();
         _prepareTimerText = GameObject.Find("PrepareTimerText").GetComponent<TMP_Text>();
 
@@ -56,7 +58,7 @@ public class Level : MonoBehaviour
             endGame.SetActive(true);
             _endGameText = GameObject.Find("EndGameText").GetComponent<TMP_Text>();
             
-            _endGameText.text = "Игра окончена \nВы набрали " + points + " очков";
+            _endGameText.text = "Игра окончена \nВы набрали " + Points + " очков";
 
             IsGameStart = false;
             IsGameOver = true;
@@ -66,7 +68,7 @@ public class Level : MonoBehaviour
             _gameTimerText.text = "Осталось: " + timer;
         }
         
-        _pointsText.text = "Очков: " + points;
+        _pointsText.text = "Очков: " + Points;
     }
 
     private void PrepareTimer()
