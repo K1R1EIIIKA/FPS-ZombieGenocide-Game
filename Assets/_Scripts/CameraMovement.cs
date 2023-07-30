@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,13 +7,9 @@ using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour
 {
-    public float mouseSensitivity = 1f;
-
-    private float _axisX;
-    private float _axisY;
-    private bool _isLocked = true;
-
-    private Vector3 _rotate;
+    public GameObject player;
+    
+    public static bool IsLocked = true;
     
     void Start()
     {
@@ -36,28 +33,20 @@ public class CameraMovement : MonoBehaviour
         if (Level.IsGameOver)
             LockCursor(false);
 
-        if (!_isLocked) return;
+        if (!IsLocked) return;
 
         if (Input.GetKeyDown(KeyCode.Mouse0) && Level.IsGameStart)
-        {
-            GetCooldown();
-            
-            if (Level.IsActiveCooldown)
-                FindObjectOfType<AudioManager>().Play("shoot");
-        }
-        
-        
-        _axisY = Input.GetAxis("Mouse X");
-        _axisX = Input.GetAxis("Mouse Y");
-        _rotate = new Vector3(_axisX, _axisY * -mouseSensitivity, 0);
+            Shoot();
 
-        transform.eulerAngles -= _rotate;
+
+        transform.position = player.transform.position;
+        transform.rotation = player.transform.rotation;
     }
 
     private void LockCursor(bool isLocked)
     {
         Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
-        _isLocked = isLocked;
+        IsLocked = isLocked;
     }
 
     private void GetCooldown()
@@ -71,5 +60,13 @@ public class CameraMovement : MonoBehaviour
         {
             Level.IsActiveCooldown = false;
         }
+    }
+
+    private void Shoot()
+    {
+        GetCooldown();
+            
+        if (Level.IsActiveCooldown)
+            FindObjectOfType<AudioManager>().Play("shoot");
     }
 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
@@ -10,23 +11,31 @@ using Random = UnityEngine.Random;
 public class PlayerAttack : MonoBehaviour
 {
     private Camera _mainCamera;
-    private Level Level;
+    private Transform _player;
+    private NavMeshAgent _enemy;
     
     private bool _isDead;
-    private float _enemySpeed;
+    public float enemySpeed = 4;
     
     void Start()
     {
-        Invoke(nameof(ReducePoints), 2);
-        _enemySpeed = Random.Range(0.25f, 2f);
+        _enemy = GetComponent<NavMeshAgent>();
+        _enemy.speed = enemySpeed;
         
+        _player = GameObject.Find("Player").transform;
         _mainCamera = Camera.main;
+        
+        // Invoke(nameof(ReducePoints), 2);
+        enemySpeed = Random.Range(0.25f, 2f);
     }
 
     void Update()
     {
         if (Level.IsGameOver)
+        {
             Destroy(transform.GameObject());
+            return;
+        }
         
         EnemyMove();
         
@@ -36,13 +45,8 @@ public class PlayerAttack : MonoBehaviour
 
     private void EnemyMove()
     {
-        Vector3 cameraPosition = _mainCamera.transform.position;
-        Vector3 position = transform.position;
-        Vector3 target = new Vector3(cameraPosition.x, position.y, cameraPosition.z);
-
-        transform.Translate((target - position) * Time.deltaTime * _enemySpeed);
-        Debug.Log(_enemySpeed);
-        Debug.Log(target + " " + position);
+        if (Level.IsGameStart && !Level.IsGameOver)
+            _enemy.SetDestination(_player.position);
     }
     
     private void HitLogic()
@@ -52,6 +56,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (hit.collider != null && hit.transform == transform)
             {
+                _enemy.isStopped = true;
                 Destroy(transform.GameObject());
                 Level.Points++;
                 
@@ -60,14 +65,14 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void ReducePoints()
-    {
-        if (!_isDead && !Level.IsGameOver)
-        {
-            if (Level.Points > 0)
-                Level.Points--;
-            
-            Destroy(transform.GameObject());
-        }
-    }
+    // private void ReducePoints()
+    // {
+    //     if (!_isDead && !Level.IsGameOver)
+    //     {
+    //         if (Level.Points > 0)
+    //             Level.Points--;
+    //         
+    //         Destroy(transform.GameObject());
+    //     }
+    // }
 }

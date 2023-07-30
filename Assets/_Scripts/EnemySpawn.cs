@@ -9,6 +9,7 @@ public class EnemySpawn : MonoBehaviour
     public int maxPositionZ = 6;
 
     public GameObject enemyPrefab;
+    public float spawnRate = 1f;
 
     private int _randX;
     private int _randZ;
@@ -20,7 +21,7 @@ public class EnemySpawn : MonoBehaviour
     {
         _level = GameObject.Find("EventSystem").GetComponent<Level>();
         
-        InvokeRepeating(nameof(SpawnEnemies), 1, 1);
+        InvokeRepeating(nameof(SpawnEnemies), spawnRate, spawnRate);
     }
 
     private void SpawnEnemies()
