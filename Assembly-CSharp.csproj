@@ -41,6 +41,7 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\_Scripts\MenuNavigation.cs" />
      <Compile Include="Assets\Supercyan Character Pack Zombie Sample\Scripts\ZombieFree.cs" />
      <Compile Include="Assets\Supercyan Character Pack Zombie Sample\Scripts\ZombieCameraLogic.cs" />
      <Compile Include="Assets\Supercyan Character Pack Zombie Sample\Scripts\ZombieCharacterControl.cs" />
@@ -51,7 +52,6 @@
      <Compile Include="Assets\_Scripts\CameraMovement.cs" />
      <Compile Include="Assets\_Scripts\Level.cs" />
      <Compile Include="Assets\_Scripts\Audio\AudioManager.cs" />
-     <Compile Include="Assets\_Scripts\MenuNavigation.cs" />
      <Folder Include="Assets" />
      <Folder Include="Assets\Supercyan Character Pack Zombie Sample\Scripts" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
