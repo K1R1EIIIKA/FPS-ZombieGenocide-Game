@@ -1,19 +1,22 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class Level : MonoBehaviour
 {
+    [Header("Parameters")]
     public int prepareTime = 3;
     public int timer = 31;
     public float setAttackCooldown = 0.5f;
 
-    public static bool IsGameOver;
+    public static bool IsGameOver = false;
     public static bool IsGameStart;
     public static bool IsActiveCooldown;
     public static float LastCooldownTime;
     public static float AttackCooldown;
+
     public static int Points;
 
     private TMP_Text _pointsText;
@@ -25,9 +28,15 @@ public class Level : MonoBehaviour
     [SerializeField] private GameObject gameTimer;
     [SerializeField] private GameObject prepareTimer;
     [SerializeField] private GameObject endGame;
-    
+
+    private void Awake()
+    {
+        IsGameOver = false;
+    }
+
     void Start()
     {
+        
         AttackCooldown = setAttackCooldown;
         _pointsText = GameObject.Find("PointsText").GetComponent<TMP_Text>();
         _prepareTimerText = GameObject.Find("PrepareTimerText").GetComponent<TMP_Text>();
@@ -38,7 +47,7 @@ public class Level : MonoBehaviour
 
     void Update()
     {
-        if (prepareTime == 0)
+        if (prepareTime == 0 && !IsGameOver)
         {
             prepareTimer.SetActive(false);
             gameTimer.SetActive(true);
@@ -52,12 +61,12 @@ public class Level : MonoBehaviour
             _prepareTimerText.text = "Приготовьтесь \n" + prepareTime;
         }
 
-        if (timer == 0)
+        if (timer == 0 && !IsGameOver && prepareTime == 0 && IsGameStart)
         {
             gameTimer.SetActive(false);
             endGame.SetActive(true);
             _endGameText = GameObject.Find("EndGameText").GetComponent<TMP_Text>();
-            
+            Debug.Log("a");
             _endGameText.text = "Игра окончена \nВы набрали " + Points + " очков";
 
             IsGameStart = false;

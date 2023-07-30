@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Characteristics")]
     public float mouseSensitivity = 1f;
     public float moveSpeed = 1f;
 
@@ -20,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private float _groundDistance = 1f;
     private bool _isGrounded;
     
+    [Header("Objects")]
     public CharacterController controller;
     public Transform groundChecker;
     public LayerMask groundMask;

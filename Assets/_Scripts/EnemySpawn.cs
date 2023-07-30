@@ -3,12 +3,16 @@ using Random = System.Random;
 
 public class EnemySpawn : MonoBehaviour
 {
+    [Header("Position")]
     public int minPositionX = -8;
     public int maxPositionX = 8;
     public int minPositionZ = -1;
     public int maxPositionZ = 6;
 
+    [Header("Objects")]
     public GameObject enemyPrefab;
+    
+    [Header("Parameters")]
     public float spawnRate = 1f;
 
     private int _randX;

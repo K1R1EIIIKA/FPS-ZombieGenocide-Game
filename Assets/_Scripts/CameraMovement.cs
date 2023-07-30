@@ -7,6 +7,7 @@ using UnityEngine.UI;
 
 public class CameraMovement : MonoBehaviour
 {
+    [Header("Objects")]
     public GameObject player;
     
     public static bool IsLocked = true;
