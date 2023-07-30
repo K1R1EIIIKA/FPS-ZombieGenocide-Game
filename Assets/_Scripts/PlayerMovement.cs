@@ -42,7 +42,7 @@ public class PlayerMovement : MonoBehaviour
         _moveAxisY = Input.GetAxisRaw("Vertical");
 
         _moveDirection = transform.forward * _moveAxisY + transform.right * _moveAxisX;
-        controller.Move(_moveDirection * moveSpeed * Time.deltaTime);
+        controller.Move(_moveDirection * (moveSpeed * Time.deltaTime));
 
         // _velocity.y += Gravity * Time.deltaTime;
         controller.Move(_velocity * Time.deltaTime);

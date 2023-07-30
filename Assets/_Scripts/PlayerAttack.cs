@@ -14,7 +14,7 @@ public class PlayerAttack : MonoBehaviour
     private Transform _player;
     private NavMeshAgent _enemy;
     
-    private bool _isDead;
+    // private bool _isDead;
     public float enemySpeed = 4;
     
     void Start()
@@ -60,8 +60,19 @@ public class PlayerAttack : MonoBehaviour
                 Destroy(transform.GameObject());
                 Level.Points++;
                 
-                _isDead = true;
+                // _isDead = true;
             }
+        }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.transform.CompareTag("Player"))
+        {
+            if (Level.Points > 0)
+                Level.Points--;
+            
+            Destroy(transform.GameObject());
         }
     }
 
